@@ -1,1 +1,2 @@
 permalink: pretty
+exclude: [config.ru, rakefile, template.haml]
