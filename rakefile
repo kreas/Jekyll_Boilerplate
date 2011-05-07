@@ -6,6 +6,12 @@ namespace :create do
       category = args[:category] || '.'
       template = args[:template] || "default"
 
+      unless File.directory?("#{category}/_posts")
+        Dir.mkdir(category)
+        Dir.mkdir("#{category}/_posts")
+      end
+
+
       TEMPLATE = "_templates/template.haml"
       TARGET_DIR = "#{category}/_posts"
 
