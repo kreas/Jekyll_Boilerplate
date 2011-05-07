@@ -1,0 +1,33 @@
+namespace :create do
+  task :post, :title, :category, :template do |t, args|
+    create_template(args[:template], 'blog', 'default')
+  end
+
+  task :workout do
+  end
+end
+
+
+def create_template(title, category, template)
+    # Get the title which was passed as an argument
+    # Get the filename
+    filename = title.gsub(' ','-')
+    filename = "#{ Time.now.strftime('%Y-%m-%d') }-#{filename}.haml"
+    filepath = File.join((category + '/_posts'), filename)
+
+    # Create a copy of the template with the title replaced
+    new_post = File.read('template.haml')
+    new_post.gsub!('TITLE', title);
+    new_post.gsub!('TEMPLATE', template);
+
+    # Write out the file to the target directory
+    new_post_file = File.open(filepath, 'w')
+    new_post_file.puts new_post
+    new_post_file.close
+
+    puts "created => #{filepath}"
+end
+
+task :server do
+  system 'jekyll --server 8080'
+end
