@@ -1,5 +1,5 @@
 namespace :create do
-  desc "Creates a blog post. You can specify the title, category and template. Only the title is manditory"
+  desc "Creates a blog post"
   task :post, :title, :category, :template do |t, args|
     if args[:title]
       title = args[:title]
@@ -31,6 +31,32 @@ namespace :create do
       puts "You must specify a title. example: rake create:post title=\"Awesome Post\""
     end
   end
+
+  desc "Creates a new page."
+  task :page, :title, :filename, :template do |t, args|
+    if args[:title]
+      title = args[:title]
+      tempalte = args[:template] || "default"
+
+      TEMPLATE = "_templates/template.haml"
+
+      filename = args[:filename] || title.gsub(' ', '-')
+      filename = "#{filename}.haml"
+      filepath = File.join('./', filename)
+
+      new_page = File.read(TEMPLATE)
+      new_page.gsub!('TITLE', title)
+
+      new_page_file = File.open(filepath, 'w')
+      new_page_file.puts new_page
+      new_page_file.close
+
+      puts "created => #{filepath}"
+    else
+      puts "You must specify a title. example: rake create:page title=\"Awesome Page\""
+    end
+  end
+
 end
 
 
@@ -40,7 +66,7 @@ namespace :site do
     system 'jekyll'
   end
 
-  desc "Starts a webserver on port 8080 and launchs Safari"
+  desc "Starts a webserver on port 8080 and launches Safari"
   task :launch do
     fork do #Mac only
       sleep 1.5
