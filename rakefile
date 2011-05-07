@@ -12,11 +12,11 @@ namespace :create do
       end
 
 
-      TEMPLATE = "_templates/template.haml"
+      TEMPLATE = "_templates/template.html"
       TARGET_DIR = "#{category}/_posts"
 
       filename = title.gsub(' ','-')
-      filename = "#{ Time.now.strftime('%Y-%m-%d') }-#{filename}.haml"
+      filename = "#{ Time.now.strftime('%Y-%m-%d') }-#{filename}.html"
       filepath = File.join(TARGET_DIR, filename)
 
       new_post = File.read(TEMPLATE)
@@ -38,10 +38,10 @@ namespace :create do
       title = args[:title]
       tempalte = args[:template] || "default"
 
-      TEMPLATE = "_templates/template.haml"
+      TEMPLATE = "_templates/template.html"
 
       filename = args[:filename] || title.gsub(' ', '-')
-      filename = "#{filename}.haml"
+      filename = "#{filename}.html"
       filepath = File.join('./', filename)
 
       new_page = File.read(TEMPLATE)
@@ -67,7 +67,7 @@ namespace :site do
   end
 
   desc "Starts a webserver on port 8080 and launches Safari"
-  task :launch do
+  task :launch => :generate do
     fork do #Mac only
       sleep 1.5
       system 'open -a Safari http://127.0.0.1:8080'
