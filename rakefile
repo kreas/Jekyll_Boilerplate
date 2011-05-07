@@ -12,7 +12,7 @@ namespace :create do
       end
 
 
-      TEMPLATE = "_templates/template.html"
+      TEMPLATE = "_layouts/template.html"
       TARGET_DIR = "#{category}/_posts"
 
       filename = title.gsub(' ','-')
@@ -20,7 +20,8 @@ namespace :create do
       filepath = File.join(TARGET_DIR, filename)
 
       new_post = File.read(TEMPLATE)
-      new_post.gsub!('TITLE', title);
+      new_post.gsub!('TITLE', title)
+      new_post.gsub!('TEMPLATE', template)
 
       new_post_file = File.open(filepath, 'w')
       new_post_file.puts new_post
@@ -36,9 +37,9 @@ namespace :create do
   task :page, :title, :filename, :template do |t, args|
     if args[:title]
       title = args[:title]
-      tempalte = args[:template] || "default"
+      template = args[:template] || "default"
 
-      TEMPLATE = "_templates/template.html"
+      TEMPLATE = "_layouts/template.html"
 
       filename = args[:filename] || title.gsub(' ', '-')
       filename = "#{filename}.html"
@@ -46,6 +47,7 @@ namespace :create do
 
       new_page = File.read(TEMPLATE)
       new_page.gsub!('TITLE', title)
+      new_page.gsub!('TEMPLATE', template)
 
       new_page_file = File.open(filepath, 'w')
       new_page_file.puts new_page
