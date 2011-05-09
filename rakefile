@@ -1,10 +1,11 @@
 namespace :create do
   desc "Creates a blog post"
-  task :post, :title, :category, :template do |t, args|
+  task :post, :title, :category, :layout, :template do |t, args|
     if args[:title]
       title = args[:title]
       category = args[:category] || '.'
-      template = args[:template] || "default"
+      layout = args[:layout] || "default"
+      template = "_layouts/#{args[:template]}.html" || "_layouts/template.html"
 
       unless File.directory?("#{category}/_posts")
         Dir.mkdir(category)
@@ -12,7 +13,7 @@ namespace :create do
       end
 
 
-      TEMPLATE = "_layouts/template.html"
+      TEMPLATE = template
       TARGET_DIR = "#{category}/_posts"
 
       filename = title.gsub(' ','-')
@@ -21,7 +22,7 @@ namespace :create do
 
       new_post = File.read(TEMPLATE)
       new_post.gsub!('TITLE', title)
-      new_post.gsub!('TEMPLATE', template)
+      new_post.gsub!('LAYOUT', layout)
 
       new_post_file = File.open(filepath, 'w')
       new_post_file.puts new_post
@@ -34,12 +35,13 @@ namespace :create do
   end
 
   desc "Creates a new page."
-  task :page, :title, :filename, :template do |t, args|
+  task :page, :title, :filename, :layout, :template do |t, args|
     if args[:title]
       title = args[:title]
-      template = args[:template] || "default"
+      layout = args[:layout] || "default"
+      template = "_layouts/#{args[:template]}.html" || "_layouts/template.html"
 
-      TEMPLATE = "_layouts/template.html"
+      TEMPLATE = template
 
       filename = args[:filename] || title.gsub(' ', '-')
       filename = "#{filename}.html"
@@ -47,7 +49,7 @@ namespace :create do
 
       new_page = File.read(TEMPLATE)
       new_page.gsub!('TITLE', title)
-      new_page.gsub!('TEMPLATE', template)
+      new_page.gsub!('LAYOUT', layout)
 
       new_page_file = File.open(filepath, 'w')
       new_page_file.puts new_page
