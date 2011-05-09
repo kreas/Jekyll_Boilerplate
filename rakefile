@@ -82,7 +82,7 @@ namespace :site do
 
   desc "Clears the _site directory"
   task :clear do
-    system 'ls _site/*|grep -v .gitkeep|xargs rm -rf'
+    system 'ls _site/* _site/|grep -v .gitkeep|xargs rm -rf'
     puts 'I just deleted everything you ever loved.'
   end
 
