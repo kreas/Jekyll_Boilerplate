@@ -5,7 +5,7 @@ namespace :create do
       title = args[:title]
       category = args[:category] || '.'
       layout = args[:layout] || "default"
-      template = "_layouts/#{args[:template]}.html" || "_layouts/template.html"
+      template = args[:template] || "template"
 
       unless File.directory?("#{category}/_posts")
         Dir.mkdir(category)
@@ -13,7 +13,7 @@ namespace :create do
       end
 
 
-      TEMPLATE = template
+      TEMPLATE = "_layouts/#{template}.html"
       TARGET_DIR = "#{category}/_posts"
 
       filename = title.gsub(' ','-')
@@ -39,9 +39,9 @@ namespace :create do
     if args[:title]
       title = args[:title]
       layout = args[:layout] || "default"
-      template = "_layouts/#{args[:template]}.html" || "_layouts/template.html"
+      template = args[:template] || "template"
 
-      TEMPLATE = template
+      TEMPLATE = "_layouts/#{template}.html"
 
       filename = args[:filename] || title.gsub(' ', '-')
       filename = "#{filename}.html"
