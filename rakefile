@@ -71,7 +71,7 @@ namespace :site do
   end
 
   desc "Starts a webserver on port 8080 and launches Safari"
-  task :launch => :generate do
+  task :launch do
     fork do #Mac only
       sleep 1.5
       system 'open -a Safari http://127.0.0.1:8080'
