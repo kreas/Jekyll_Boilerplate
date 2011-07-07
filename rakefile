@@ -76,7 +76,7 @@ namespace :site do
       sleep 1.5
       system 'open -a Safari http://127.0.0.1:8080'
     end
-    system 'jekyll --server 8080'
+    system 'jekyll --server 8080 --auto'
     puts 'Here then, as I lay down the pen and proceed to seal up my confession, I bring the life of that unhappy Henry Jekyll to an end.'
   end
 
