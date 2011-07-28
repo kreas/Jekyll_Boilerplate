@@ -72,18 +72,13 @@ namespace :site do
 
   desc "Starts a webserver on port 8080 and launches Safari"
   task :launch do
-    fork do #Mac only
-      sleep 1.5
-      system 'open -a Safari http://127.0.0.1:8080'
-    end
-    system 'jekyll --server 8080 --auto'
-    puts 'Here then, as I lay down the pen and proceed to seal up my confession, I bring the life of that unhappy Henry Jekyll to an end.'
+    system 'jekyll --server 8080 --auto --rdiscount'
   end
 
   desc "Clears the _site directory"
   task :clear do
     system 'rm -rf _site/ && mkdir _site && touch _site/.gitkeep'
-    puts 'I just deleted everything you ever loved.'
+    puts 'Removed all files in the _site directory'
   end
 
   desc "Deploys the site to heroku"
