@@ -1,2 +1,11 @@
 permalink: pretty
-exclude: [config.ru, rakefile, template.haml]
+plugins: plugins
+source: _themes/default
+markdown: rdiscount
+exclude: [config.ru, rakefile, template.haml, README.textile, Gemfile, Gemfile.lock, plugins]
+
+#--- Misc Options ---#
+google_analytics: UA-XXXXXXXX-X
+
+
+

@@ -1,3 +1,6 @@
+require "yaml"
+site_source = YAML.load_file('_config.yml')['source']
+
 namespace :create do
   desc "Creates a blog post"
   task :post, :title, :category, :layout, :template do |t, args|
@@ -7,14 +10,14 @@ namespace :create do
       layout = args[:layout] || "default"
       template = args[:template] || "template"
 
-      unless File.directory?("#{category}/_posts")
+      unless File.directory?("#{site_source}/#{category}/_posts")
         Dir.mkdir(category)
-        Dir.mkdir("#{category}/_posts")
+        Dir.mkdir("#{site_source}/#{category}/_posts")
       end
 
 
-      TEMPLATE = "_layouts/#{template}.html"
-      TARGET_DIR = "#{category}/_posts"
+      TEMPLATE = "#{site_source}/_layouts/#{template}.html"
+      TARGET_DIR = "#{site_source}/#{category}/_posts"
 
       filename = title.gsub(' ','-')
       filename = "#{ Time.now.strftime('%Y-%m-%d') }-#{filename}.html"
@@ -41,10 +44,10 @@ namespace :create do
       layout = args[:layout] || "default"
       template = args[:template] || "template"
 
-      TEMPLATE = "_layouts/#{template}.html"
+      TEMPLATE = "#{site_source}/_layouts/#{template}.html"
 
       filename = args[:filename] || title.gsub(' ', '-')
-      filename = "#{filename}.html"
+      filename = "#{site_source}/#{filename}.html"
       filepath = File.join('./', filename)
 
       new_page = File.read(TEMPLATE)
@@ -70,9 +73,9 @@ namespace :site do
     system 'jekyll'
   end
 
-  desc "Starts a webserver on port 8080 and launches Safari"
+  desc "Starts a webserver on port 4000 and launches Safari"
   task :launch do
-    system 'jekyll --server 8080 --auto --rdiscount'
+    system 'jekyll --server --auto'
   end
 
   desc "Clears the _site directory"

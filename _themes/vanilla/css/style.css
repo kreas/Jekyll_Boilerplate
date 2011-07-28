@@ -1,0 +1,6 @@
+/* Add compatiblity for older browsers */
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section {
+    display:block;
+}
+::selection { background: #4CF3B8 }
