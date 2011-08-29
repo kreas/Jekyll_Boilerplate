@@ -1,5 +1,11 @@
 require "yaml"
-site_source = YAML.load_file('_config.yml')['source']
+
+config = YAML.load_file('_config.yml')
+source = config['source']
+server = config['server']
+username = config['username']
+remote_path = config['remote_path']
+
 
 namespace :create do
   desc "Creates a blog post"
@@ -10,14 +16,14 @@ namespace :create do
       layout = args[:layout] || "default"
       template = args[:template] || "template"
 
-      unless File.directory?("#{site_source}/#{category}/_posts")
+      unless File.directory?("#{source}/#{category}/_posts")
         Dir.mkdir(category)
-        Dir.mkdir("#{site_source}/#{category}/_posts")
+        Dir.mkdir("#{source}/#{category}/_posts")
       end
 
 
-      TEMPLATE = "#{site_source}/_layouts/#{template}.html"
-      TARGET_DIR = "#{site_source}/#{category}/_posts"
+      TEMPLATE = "#{source}/_layouts/#{template}.html"
+      TARGET_DIR = "#{source}/#{category}/_posts"
 
       filename = title.gsub(' ','-')
       filename = "#{ Time.now.strftime('%Y-%m-%d') }-#{filename}.html"
@@ -44,10 +50,10 @@ namespace :create do
       layout = args[:layout] || "default"
       template = args[:template] || "template"
 
-      TEMPLATE = "#{site_source}/_layouts/#{template}.html"
+      TEMPLATE = "#{source}/_layouts/#{template}.html"
 
       filename = args[:filename] || title.gsub(' ', '-')
-      filename = "#{site_source}/#{filename}.html"
+      filename = "#{source}/#{filename}.html"
       filepath = File.join('./', filename)
 
       new_page = File.read(TEMPLATE)
@@ -85,7 +91,22 @@ namespace :site do
   end
 
   desc "Deploys the site to heroku"
-  task :deploy do
+  task :heroku do
     system 'git push heroku master'
   end
+
+  desc "Create the remote directory if it doesn't already exist"
+  task :stage do
+    system "ssh #{username}@#{server} 'test -d #{remote_path} || mkdir -p #{remote_path}'"
+  end
+
+  desc "Deploys the site to the primary server"
+  task :deploy do
+    system "rsync -avz --delete ./ #{username}@#{server}:#{remote_path}"
+  end
+end
+
+desc "Restart passenger"
+task :restart do
+  system "ssh #{username}@#{server} 'touch #{remote_path}/tmp/restart.txt}'"
 end
