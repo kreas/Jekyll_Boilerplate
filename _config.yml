@@ -1,3 +1,4 @@
+name: Test Site
 permalink: pretty
 plugins: _plugins
 source: _themes/default
