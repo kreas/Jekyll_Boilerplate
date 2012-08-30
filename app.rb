@@ -2,10 +2,10 @@ require 'rubygems'
 require 'sinatra'
 
 #set the location of all of the public files
-set :public, Proc.new { File.join(root, "_site") }
+set :public, Proc.new { File.join(root, "static/_site") }
 
 get '/' do
-    File.open('_site/index.html')
+    File.open('static/_site/index.html')
 end
 
 get '/admin' do
